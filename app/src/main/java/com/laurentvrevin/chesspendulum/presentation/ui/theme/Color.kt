@@ -1,4 +1,4 @@
-package com.laurentvrevin.chesspendulum.ui.theme
+package com.laurentvrevin.chesspendulum.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

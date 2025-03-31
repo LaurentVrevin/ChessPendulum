@@ -1,4 +1,4 @@
-package com.laurentvrevin.chesspendulum.ui.theme
+package com.laurentvrevin.chesspendulum.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
