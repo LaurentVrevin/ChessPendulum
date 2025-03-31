@@ -2,6 +2,8 @@ package com.laurentvrevin.chesspendulum.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.laurentvrevin.chesspendulum.domain.usecase.FormatTimeUseCase
+import com.laurentvrevin.chesspendulum.domain.usecase.TimeManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +12,9 @@ import kotlinx.coroutines.launch
 
 class GameViewModel(
     initialTime: Long,
-    private val incrementMillis: Long
+    incrementMillis: Long,
+    private val formatTimeUseCase: FormatTimeUseCase = FormatTimeUseCase(),
+    private val timeManager: TimeManager = TimeManager(incrementMillis)
 ) : ViewModel() {
 
     private val initialTotalTime = initialTime + incrementMillis
@@ -71,19 +75,19 @@ class GameViewModel(
         lastTickTime = now
 
         if (_activePlayer.value == 1) {
-            _player1Time.value = (_player1Time.value - elapsed).coerceAtLeast(0L)
+            _player1Time.value = timeManager.subtractElapsed(_player1Time.value, elapsed)
             if (_player1Time.value <= 0L) endGame(winner = 2)
         } else {
-            _player2Time.value = (_player2Time.value - elapsed).coerceAtLeast(0L)
+            _player2Time.value = timeManager.subtractElapsed(_player2Time.value, elapsed)
             if (_player2Time.value <= 0L) endGame(winner = 1)
         }
     }
 
     private fun applyIncrement() {
         if (_activePlayer.value == 1) {
-            _player1Time.value += incrementMillis
+            _player1Time.value = timeManager.applyIncrement(_player1Time.value)
         } else {
-            _player2Time.value += incrementMillis
+            _player2Time.value = timeManager.applyIncrement(_player2Time.value)
         }
     }
 
@@ -94,10 +98,5 @@ class GameViewModel(
         _winner.value = winner
     }
 
-    fun formatTime(millis: Long): String {
-        val totalSeconds = millis / 1000
-        val minutes = totalSeconds / 60
-        val seconds = totalSeconds % 60
-        return String.format("%02d:%02d", minutes, seconds)
-    }
+    fun formatTime(millis: Long): String = formatTimeUseCase(millis)
 }

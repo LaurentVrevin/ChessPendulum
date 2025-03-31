@@ -1,13 +1,12 @@
 package com.laurentvrevin.chesspendulum.presentation.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
+
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -16,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.laurentvrevin.chesspendulum.R
+import com.laurentvrevin.chesspendulum.presentation.components.PlayerZone
 import com.laurentvrevin.chesspendulum.presentation.viewmodel.GameViewModel
 
 @Composable
@@ -51,45 +51,28 @@ fun GameScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         }
     } else {
         Column(modifier = Modifier.fillMaxSize()) {
-            Box(modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .background(if (activePlayer == 1) Color.Black else Color(0xFFCCCCCC))
-                .clickable {
+            PlayerZone(
+                name = stringResource(id = R.string.black),
+                time = viewModel.formatTime(p1Time),
+                isActive = activePlayer == 1,
+                onClick = {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     viewModel.onPlayerClick(1)
                 },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(id = R.string.black), color = Color.White)
-                    Text(
-                        text = viewModel.formatTime(p1Time),
-                        style = MaterialTheme.typography.headlineLarge,
-                        modifier = Modifier.rotate(180f),
-                        color = Color.White
-                    )
-                }
-            }
-            Box(modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .background(if (activePlayer == 2) Color.White else Color.LightGray)
-                .clickable {
+                darkTheme = true,
+                modifier = Modifier.weight(1f)
+            )
+            PlayerZone(
+                name = stringResource(id = R.string.white),
+                time = viewModel.formatTime(p2Time),
+                isActive = activePlayer == 2,
+                onClick = {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
                     viewModel.onPlayerClick(2)
                 },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(stringResource(id = R.string.white), color = Color.Black)
-                    Text(
-                        text = viewModel.formatTime(p2Time),
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = Color.Black
-                    )
-                }
-            }
+                darkTheme = false,
+                modifier = Modifier.weight(1f)
+            )
         }
     }
 }
