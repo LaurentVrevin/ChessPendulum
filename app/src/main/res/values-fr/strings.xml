@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pendule d\'Échecs</string>
+    <string name="select_game_mode">Sélectionne un mode de jeu</string>
+    <string name="start_game">Démarrer</string>
+    <string name="black">Noir</string>
+    <string name="white">Blanc</string>
+    <string name="player_wins">Joueur %1$d a gagné !</string>
+</resources>
