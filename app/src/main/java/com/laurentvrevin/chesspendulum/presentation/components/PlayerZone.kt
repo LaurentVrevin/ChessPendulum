@@ -11,6 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import com.laurentvrevin.chesspendulum.R
 
 @Composable
 fun PlayerZone(
@@ -19,6 +22,7 @@ fun PlayerZone(
     isActive: Boolean,
     onClick: () -> Unit,
     darkTheme: Boolean = false,
+    moveCount: Int,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -32,7 +36,14 @@ fun PlayerZone(
             Text(name, color = if (darkTheme) Color.White else Color.Black)
             Text(
                 text = time,
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.displayLarge,
+                fontWeight = FontWeight.Bold,
+                color = if (darkTheme) Color.White else Color.Black
+            )
+            Text(
+                text = stringResource(id = R.string.moves_played, moveCount),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold,
                 color = if (darkTheme) Color.White else Color.Black
             )
         }

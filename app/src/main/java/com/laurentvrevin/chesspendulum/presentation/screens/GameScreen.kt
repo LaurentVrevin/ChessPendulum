@@ -34,6 +34,8 @@ fun GameScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
     val p1Time by viewModel.player1Time.collectAsState()
     val p2Time by viewModel.player2Time.collectAsState()
+    val p1Moves by viewModel.player1Moves.collectAsState()
+    val p2Moves by viewModel.player2Moves.collectAsState()
     val activePlayer by viewModel.activePlayer.collectAsState()
     val gameOver by viewModel.gameOver.collectAsState()
     val winner by viewModel.winner.collectAsState()
@@ -54,6 +56,7 @@ fun GameScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             PlayerZone(
                 name = stringResource(id = R.string.black),
                 time = viewModel.formatTime(p1Time),
+                moveCount = p1Moves,
                 isActive = activePlayer == 1,
                 onClick = {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -65,6 +68,7 @@ fun GameScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             PlayerZone(
                 name = stringResource(id = R.string.white),
                 time = viewModel.formatTime(p2Time),
+                moveCount = p2Moves,
                 isActive = activePlayer == 2,
                 onClick = {
                     haptics.performHapticFeedback(HapticFeedbackType.LongPress)

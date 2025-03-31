@@ -6,4 +6,8 @@
     <string name="black">Noir</string>
     <string name="white">Blanc</string>
     <string name="player_wins">Joueur %1$d a gagné !</string>
+    <string name="custom_settings">Paramètres personnalisés :</string>
+    <string name="minutes">Minutes</string>
+    <string name="increment_seconds">Incrément (sec)</string>
+    <string name="moves_played">Coups : %1$d</string>
 </resources>

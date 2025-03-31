@@ -10,42 +10,55 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.laurentvrevin.chesspendulum.R
 import com.laurentvrevin.chesspendulum.data.model.GameMode
+import com.laurentvrevin.chesspendulum.presentation.components.CustomTimeSelector
+import com.laurentvrevin.chesspendulum.presentation.components.GameModeSelector
 
 @Composable
 fun ConfigScreen(navController: NavController) {
     var selectedMode by remember { mutableStateOf(GameMode.BLITZ) }
+    var customMinutes by remember { mutableStateOf(5) }
+    var customIncrement by remember { mutableStateOf(0) }
 
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)) {
 
-        Text("Select your game mode", style = MaterialTheme.typography.headlineSmall)
+        Text(stringResource(id = R.string.select_game_mode), style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(16.dp))
 
-        GameMode.values().forEach { mode ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp)
-            ) {
-                RadioButton(
-                    selected = selectedMode == mode,
-                    onClick = { selectedMode = mode }
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = mode.label)
-            }
+        GameModeSelector(selectedMode) { selectedMode = it }
+
+        if (selectedMode == GameMode.CUSTOM) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = stringResource(id = R.string.custom_settings))
+
+            CustomTimeSelector(
+                label = stringResource(id = R.string.minutes),
+                value = customMinutes,
+                onDecrement = { if (customMinutes > 1) customMinutes-- },
+                onIncrement = { if (customMinutes < 60) customMinutes++ }
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CustomTimeSelector(
+                label = stringResource(id = R.string.increment_seconds),
+                value = customIncrement,
+                onDecrement = { if (customIncrement > 0) customIncrement-- },
+                onIncrement = { if (customIncrement < 60) customIncrement++ }
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(onClick = {
-            val timeMillis = selectedMode.timeMinutes * 60 * 1000L
-            val incrementMillis = selectedMode.incrementSeconds * 1000L
+            val timeMinutes = if (selectedMode == GameMode.CUSTOM) customMinutes else selectedMode.timeMinutes
+            val incrementSeconds = if (selectedMode == GameMode.CUSTOM) customIncrement else selectedMode.incrementSeconds
+            val timeMillis = timeMinutes * 60 * 1000L
+            val incrementMillis = incrementSeconds * 1000L
             navController.navigate("game/${timeMillis}_${incrementMillis}")
         }) {
-            Text("Start Game")
+            Text(stringResource(id = R.string.start_game))
         }
     }
 }

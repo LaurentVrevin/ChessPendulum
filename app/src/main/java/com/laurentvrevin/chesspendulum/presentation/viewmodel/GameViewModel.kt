@@ -33,6 +33,12 @@ class GameViewModel(
     private val _player2Time = MutableStateFlow(initialTotalTime)
     val player2Time: StateFlow<Long> = _player2Time
 
+    private val _player1Moves = MutableStateFlow(0)
+    val player1Moves: StateFlow<Int> = _player1Moves
+
+    private val _player2Moves = MutableStateFlow(0)
+    val player2Moves: StateFlow<Int> = _player2Moves
+
     private val _gameOver = MutableStateFlow(false)
     val gameOver: StateFlow<Boolean> = _gameOver
 
@@ -52,6 +58,14 @@ class GameViewModel(
 
         updateTime()
         applyIncrement()
+
+        // Incrémenter le compteur de coups du joueur actif
+        if (_activePlayer.value == 1) {
+            _player1Moves.value += 1
+        } else {
+            _player2Moves.value += 1
+        }
+
         _activePlayer.value = 3 - _activePlayer.value
         lastTickTime = System.currentTimeMillis()
     }

@@ -5,4 +5,8 @@
     <string name="black">Black</string>
     <string name="white">White</string>
     <string name="player_wins">Player %1$d wins!</string>
+    <string name="custom_settings">Custom settings:</string>
+    <string name="minutes">Minutes</string>
+    <string name="increment_seconds">Increment (sec)</string>
+    <string name="moves_played">Moves: %1$d</string>
 </resources>
