@@ -1,36 +1,24 @@
 package com.laurentvrevin.chesspendulum.presentation.screens
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.laurentvrevin.chesspendulum.R
 import com.laurentvrevin.chesspendulum.presentation.components.PlayerZone
 import com.laurentvrevin.chesspendulum.presentation.viewmodel.GameViewModel
 
 @Composable
-fun GameScreen(navController: NavController, backStackEntry: NavBackStackEntry) {
+fun GameScreen(navController: NavController) {
     val haptics = LocalHapticFeedback.current
-    val args = backStackEntry.arguments
-    val initialTime = args?.getString("initialTime")?.toLongOrNull() ?: 0L
-    val incrementMillis = args?.getString("incrementMillis")?.toLongOrNull() ?: 0L
-
-    val viewModel: GameViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-            return GameViewModel(initialTime, incrementMillis) as T
-        }
-    })
+    val viewModel: GameViewModel = hiltViewModel()
 
     val p1Time by viewModel.player1Time.collectAsState()
     val p2Time by viewModel.player2Time.collectAsState()

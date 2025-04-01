@@ -1,23 +1,27 @@
 package com.laurentvrevin.chesspendulum.presentation.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.laurentvrevin.chesspendulum.domain.usecase.FormatTimeUseCase
 import com.laurentvrevin.chesspendulum.domain.usecase.TimeManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GameViewModel(
-    initialTime: Long,
-    incrementMillis: Long,
-    private val formatTimeUseCase: FormatTimeUseCase = FormatTimeUseCase(),
-    private val timeManager: TimeManager = TimeManager(incrementMillis)
+@HiltViewModel
+class GameViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val formatTimeUseCase: FormatTimeUseCase
 ) : ViewModel() {
 
-
+    private val initialTime: Long = savedStateHandle["initialTime"] ?: 0L
+    private val incrementMillis: Long = savedStateHandle["incrementMillis"] ?: 0L
+    private val timeManager = TimeManager(incrementMillis)
     private val initialTotalTime = initialTime + incrementMillis
 
     private val _activePlayer = MutableStateFlow(1)

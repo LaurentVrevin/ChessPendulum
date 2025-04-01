@@ -18,14 +18,14 @@ fun NavGraph() {
             ConfigScreen(navController)
         }
         composable(
-
-            "game/{initialTime}_{incrementMillis}",
+            route = "${Screen.Game.route}?initialTime={initialTime}&incrementMillis={incrementMillis}",
             arguments = listOf(
-                navArgument("initialTime") { type = NavType.StringType },
-                navArgument("incrementMillis") { type = NavType.StringType }
+                navArgument("initialTime") { type = NavType.LongType },
+                navArgument("incrementMillis") { type = NavType.LongType }
             )
-        ) { backStackEntry ->
-            GameScreen(navController, backStackEntry)
+        ) {
+            GameScreen(navController)
         }
+
     }
 }

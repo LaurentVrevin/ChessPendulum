@@ -3,7 +3,7 @@ package com.laurentvrevin.chesspendulum.presentation.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -12,12 +12,13 @@ import com.laurentvrevin.chesspendulum.R
 import com.laurentvrevin.chesspendulum.data.model.GameMode
 import com.laurentvrevin.chesspendulum.presentation.components.CustomTimeSelector
 import com.laurentvrevin.chesspendulum.presentation.components.GameModeSelector
+import com.laurentvrevin.chesspendulum.presentation.navigation.Screen
 
 @Composable
 fun ConfigScreen(navController: NavController) {
     var selectedMode by remember { mutableStateOf(GameMode.BLITZ) }
-    var customMinutes by remember { mutableStateOf(5) }
-    var customIncrement by remember { mutableStateOf(0) }
+    var customMinutes by remember { mutableIntStateOf(5) }
+    var customIncrement by remember { mutableIntStateOf(0) }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -56,7 +57,12 @@ fun ConfigScreen(navController: NavController) {
             val incrementSeconds = if (selectedMode == GameMode.CUSTOM) customIncrement else selectedMode.incrementSeconds
             val timeMillis = timeMinutes * 60 * 1000L
             val incrementMillis = incrementSeconds * 1000L
-            navController.navigate("game/${timeMillis}_${incrementMillis}")
+            navController.navigate(
+                Screen.Game.withParams(
+                    initialTime = timeMillis,
+                    incrementMillis = incrementMillis
+                )
+            )
         }) {
             Text(stringResource(id = R.string.start_game))
         }
