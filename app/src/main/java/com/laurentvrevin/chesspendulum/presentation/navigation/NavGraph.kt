@@ -18,6 +18,7 @@ fun NavGraph() {
             ConfigScreen(navController)
         }
         composable(
+
             "game/{initialTime}_{incrementMillis}",
             arguments = listOf(
                 navArgument("initialTime") { type = NavType.StringType },

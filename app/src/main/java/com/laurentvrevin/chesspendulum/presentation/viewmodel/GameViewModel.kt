@@ -17,6 +17,7 @@ class GameViewModel(
     private val timeManager: TimeManager = TimeManager(incrementMillis)
 ) : ViewModel() {
 
+
     private val initialTotalTime = initialTime + incrementMillis
 
     private val _activePlayer = MutableStateFlow(1)
@@ -59,7 +60,6 @@ class GameViewModel(
         updateTime()
         applyIncrement()
 
-        // Incrémenter le compteur de coups du joueur actif
         if (_activePlayer.value == 1) {
             _player1Moves.value += 1
         } else {
